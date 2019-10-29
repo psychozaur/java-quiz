@@ -1,5 +1,7 @@
 package com.rybickim.javaquiz.service;
 
+import com.rybickim.javaquiz.domain.QuestionDTO;
+
 public interface AddQuizService {
 
     //TODO
@@ -36,4 +38,8 @@ public interface AddQuizService {
                 saveQuestion
     2. readIntoDTO
      */
+
+    long writeFromDTO(QuestionDTO questionDTO);
+
+    QuestionDTO readIntoDTO();
 }
