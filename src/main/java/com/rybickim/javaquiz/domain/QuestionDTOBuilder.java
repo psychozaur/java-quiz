@@ -4,6 +4,7 @@ public class QuestionDTOBuilder {
 
     private String question;
     private String category;
+    private AnswersEnum answersEnum;
     private String[] correctAnswer;
     private String[] answerText;
     private String[] answersToChoose;
@@ -18,6 +19,10 @@ public class QuestionDTOBuilder {
     public QuestionDTOBuilder setCategory(String category){
         this.category = category;
         return this;
+    }
+
+    public void setAnswersEnum(AnswersEnum answersEnum) {
+        this.answersEnum = answersEnum;
     }
 
     public QuestionDTOBuilder setCorrectAnswer(String[] correctAnswer){
@@ -48,6 +53,7 @@ public class QuestionDTOBuilder {
     public QuestionDTO buildQuestionDTO() {
         return new QuestionDTO(question,
                 category,
+                answersEnum,
                 correctAnswer,
                 answerText,
                 answersToChoose,

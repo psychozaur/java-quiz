@@ -12,4 +12,6 @@ public interface CategoryCrudRepository
 
     @Query("SELECT c FROM Categories c JOIN FETCH c.questions")
     List<Categories> findFirstByCategory(Pageable pageable);
+
+    Categories findFirstByCategoryName(String categoryName);
 }
