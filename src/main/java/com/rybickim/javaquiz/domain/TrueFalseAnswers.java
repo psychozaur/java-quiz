@@ -26,6 +26,7 @@ public class TrueFalseAnswers extends Answers {
         this.correctValue = correctValue;
     }
 
+    @Override
     public String getCorrectValueString(){
         if (correctValue) return values.get(1);
         else return values.get(0);

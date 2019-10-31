@@ -16,8 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AddQuizServiceImpl implements AddQuizService {
@@ -72,7 +75,7 @@ public class AddQuizServiceImpl implements AddQuizService {
 
         switch (answersEnum){
             case TRUE_FALSE:
-                answer = new TrueFalseAnswers();
+                answer = new TrueFalseAnswers(Boolean.getBoolean(questionDTO.getCorrectAnswer()[0]));
                 break;
             case MULTIPLE_CHOICE:
                 answer = new MultipleChoiceAnswers();
@@ -80,10 +83,17 @@ public class AddQuizServiceImpl implements AddQuizService {
             case MISSING_GAP:
                 answer = new MissingGapAnswers();
                 break;
+                default:
+                    answer = new Answers();
+                    break;
         }
 
         if (null != correctAnswer) {
             // how not to break polymorphism
+//            answer.addSentences((Arrays.stream(questionDTO.getAnswersToChoose())
+//                    .map(answerToChoose -> new SentencesToChoose(,answerToChoose))
+//                    .collect(Collectors.toList())));
+//            answer.addMissingWords(questionDTO.getAnswerText());
         }
 
         // TODO

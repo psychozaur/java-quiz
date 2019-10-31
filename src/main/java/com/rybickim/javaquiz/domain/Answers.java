@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Indexed
 @Entity
@@ -17,7 +18,7 @@ import javax.persistence.*;
         name = "answer_type_id",
         columnDefinition = "TINYINT(1)"
 )
-public class Answers {
+public class Answers implements Answerable {
 
     @Id
     private Long id;
@@ -26,4 +27,48 @@ public class Answers {
     @MapsId
     private Questions questions;
 
+    @Override
+    public String getCorrectValueString() {
+        return "empty";
+    }
+
+    @Override
+    public void addSentence(SentencesToChoose sentence) {
+
+    }
+
+    @Override
+    public void removeSentence(SentencesToChoose sentence) {
+
+    }
+
+    @Override
+    public void addSentences(List<SentencesToChoose> sentence) {
+
+    }
+
+    @Override
+    public void removeSentences(List<SentencesToChoose> sentence) {
+
+    }
+
+    @Override
+    public void addMissingWord(MissingWords missingWord) {
+
+    }
+
+    @Override
+    public void removeMissingWord(MissingWords missingWord) {
+
+    }
+
+    @Override
+    public void addMissingWords(List<MissingWords> words) {
+
+    }
+
+    @Override
+    public void removeMissingWords(List<MissingWords> words) {
+
+    }
 }
