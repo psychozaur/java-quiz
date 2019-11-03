@@ -65,12 +65,13 @@ public class AddQuizServiceImpl implements AddQuizService {
 
         Categories newCategory = new Categories(questionDTO.getCategory());
 
+        //TODO Optional instead of null check?
         AnswersEnum answersEnum = questionDTO.getAnswersEnum();
         String[] correctAnswer = questionDTO.getCorrectAnswer();
         String[] answerText = questionDTO.getAnswerText();
         String[] answersToChoose = questionDTO.getAnswersToChoose();
-        String explanation = questionDTO.getExplanation();
-        DBFile dbFile = questionDTO.getDiagram();
+        String explanationText = questionDTO.getExplanation();
+        DBFile diagram = questionDTO.getDiagram();
 
         Answers answer = new Answers();
 
@@ -109,14 +110,21 @@ public class AddQuizServiceImpl implements AddQuizService {
 
         newQuestion.addAnswer(answer);
 
-        // TODO
-        //  if explanation not null
-        //  newQuestion.addExplanation
+        Explanations explanation = new Explanations();
+
+        if(null != explanationText){
+            explanation.setExplanationText(explanationText);
+            if(null != diagram){
+                explanation.setExplanationDiagramFileId(diagram.getId());
+            }
+        }
+
+        newQuestion.addExplanation(explanation);
 
         newCategory.addQuestion(newQuestion);
-        long newQuestionId = questionCrudRepository.save(newQuestion).getId();
 
-        return newQuestionId;
+        return questionCrudRepository.save(newQuestion).getId();
+
     }
 
     @Override

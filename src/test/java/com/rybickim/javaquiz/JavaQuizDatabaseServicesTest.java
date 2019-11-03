@@ -51,8 +51,10 @@ public class JavaQuizDatabaseServicesTest {
     private QuestionService questionService;
     private CategoryService categoryService;
     private ChosenQuestionService chosenQuestionService;
+    private AnswerService answerService;
     private ExplanationService explanationService;
     private DBFileStorageService dbFileStorageService;
+    private AddQuizService addQuizService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -73,6 +75,11 @@ public class JavaQuizDatabaseServicesTest {
     }
 
     @Autowired
+    public void setAnswerService(AnswerService answerService) {
+        this.answerService = answerService;
+    }
+
+    @Autowired
     public void setExplanationService(ExplanationService explanationService) {
         this.explanationService = explanationService;
     }
@@ -80,6 +87,11 @@ public class JavaQuizDatabaseServicesTest {
     @Autowired
     public void setDbFileStorageService(DBFileStorageService dbFileStorageService) {
         this.dbFileStorageService = dbFileStorageService;
+    }
+
+    @Autowired
+    public void setAddQuizService(AddQuizService addQuizService) {
+        this.addQuizService = addQuizService;
     }
 
     @Test
@@ -733,6 +745,30 @@ public class JavaQuizDatabaseServicesTest {
 
         // Then
         assertEquals(questionsCount + 1, questionService.countQuestions());
+    }
+
+
+    //TODO what is says on the tin
+    @Test
+    public void testIfDataIsWrittenFromDTOCorrectly(){
+
+        //Given
+        long questionsCount = questionService.countQuestions();
+        long categoriesCount = categoryService.countCategories();
+        long answersCount = answerService.countAnswers();
+        long explanationsCount = explanationService.countExplanations();
+
+//        QuestionDTO questionDTO = new QuestionDTO();
+
+        //When
+//        addQuizService.writeFromDTO(questionDTO);
+
+        //Then
+        assertEquals(questionsCount + 1, questionService.countQuestions());
+        assertEquals(categoriesCount + 1, categoryService.countCategories());
+        assertEquals(answersCount + 1, answerService.countAnswers());
+        assertEquals(explanationsCount + 1, explanationService.countExplanations());
+
     }
 
     /////////////////////////////////////////////
