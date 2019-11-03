@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
@@ -71,36 +72,51 @@ public class AddQuizServiceImpl implements AddQuizService {
         String explanation = questionDTO.getExplanation();
         DBFile dbFile = questionDTO.getDiagram();
 
-        Answers answer;
+        Answers answer = new Answers();
 
         switch (answersEnum){
             case TRUE_FALSE:
-                answer = new TrueFalseAnswers(Boolean.getBoolean(questionDTO.getCorrectAnswer()[0]));
+                if (null != correctAnswer){
+                    answer = new TrueFalseAnswers(Boolean.getBoolean(correctAnswer[0]));
+                }
                 break;
             case MULTIPLE_CHOICE:
-                answer = new MultipleChoiceAnswers();
+                if (null != answersToChoose){
+                    //first answer is default as the correct one
+                    Integer correctOrdinal = IntStream.range(0, answersToChoose.length)
+                            .filter(i -> answersToChoose[i] == correctAnswer[0])
+                            .findFirst()
+                            .orElse(0);
+                    answer = new MultipleChoiceAnswers(correctOrdinal);
+                    answer.addSentences(IntStream.range(0, answersToChoose.length)
+                            .mapToObj(i -> new SentencesToChoose(i, answersToChoose[i]))
+                            .collect(Collectors.toList()));
+                }
                 break;
             case MISSING_GAP:
-                answer = new MissingGapAnswers();
+                if (null != answerText && null != correctAnswer){
+                    int highestLength = Integer.max(correctAnswer.length, answerText.length);
+                    answer = new MissingGapAnswers();
+                    answer.addMissingWords(IntStream.range(0, highestLength)
+                            .mapToObj(i -> new MissingWords(i, answerText[i], correctAnswer[i]))
+                            .collect(Collectors.toList()));
+                }
                 break;
                 default:
                     answer = new Answers();
                     break;
         }
 
-        if (null != correctAnswer) {
-            // how not to break polymorphism
-//            answer.addSentences((Arrays.stream(questionDTO.getAnswersToChoose())
-//                    .map(answerToChoose -> new SentencesToChoose(,answerToChoose))
-//                    .collect(Collectors.toList())));
-//            answer.addMissingWords(questionDTO.getAnswerText());
-        }
+        newQuestion.addAnswer(answer);
 
         // TODO
-        //        newCategory.addQuestion(newQuestion);
-        //        questionCrudRepository.save(newQuestion);
+        //  if explanation not null
+        //  newQuestion.addExplanation
 
-        return 0;
+        newCategory.addQuestion(newQuestion);
+        long newQuestionId = questionCrudRepository.save(newQuestion).getId();
+
+        return newQuestionId;
     }
 
     @Override

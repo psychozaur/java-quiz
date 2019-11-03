@@ -22,8 +22,8 @@ public class MissingWords {
     Integer ordinal;
 
     @Lob
-    @Column(name = "textPassage", columnDefinition = "CLOB")
-    String textPassage;
+    @Column(name = "textPassageBeforeTerm", columnDefinition = "CLOB")
+    String textPassageBeforeTerm;
 
     String missingTerm;
 
@@ -31,9 +31,9 @@ public class MissingWords {
     @JoinColumn(name = "question_id")
     private Answers missingGapAnswers;
 
-    public MissingWords(Integer ordinal, String textPassage, String missingTerm) {
+    public MissingWords(Integer ordinal, String textPassageBeforeTerm, String missingTerm) {
         this.ordinal = ordinal;
-        this.textPassage = textPassage;
+        this.textPassageBeforeTerm = textPassageBeforeTerm;
         this.missingTerm = missingTerm;
     }
 }
